@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Vein of Light — Vesper Nairn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --abyss:#030609;
+    --deep:#07131a;
+    --flow-core:#f2fff6;
+    --flow:#7dffce;
+    --flow-tail:#22c3a8;
+    --flow-dim:rgba(125,255,206,.5);
+    --field:rgba(40,130,150,.14);
+    --warm:#ffc266;
+    --warm-hot:#ff8e3d;
+    --visitor:#ff8f6b;
+    --ink-dim:rgba(210,238,228,.66);
+    --ink-faint:rgba(210,238,228,.42);
+    --hair:rgba(125,255,206,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--abyss);
+    color:var(--ink-dim);
+    overflow:hidden;
+    font-family:'Karla',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:none;
+  }
+  #sketch{position:fixed;inset:0;z-index:0}
+  canvas{display:block;touch-action:none}
+  .room{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(130% 70% at 50% 115%, rgba(4,12,18,.7) 0%, rgba(0,0,0,0) 55%),
+      radial-gradient(100% 100% at 50% 40%, rgba(0,0,0,0) 50%, rgba(0,0,0,.55) 100%);
+  }
+  .room::after{
+    content:"";position:absolute;inset:0;opacity:.045;mix-blend-mode:overlay;
+    background-image:repeating-conic-gradient(rgba(255,255,255,.6) 0% .0002%, transparent .0003% .0009%);
+  }
+  .ui{position:fixed;z-index:3;pointer-events:none}
+
+  /* ---------------- wall label (bottom right) ---------------- */
+  .label{
+    right:22px;bottom:20px;max-width:min(340px,80vw);
+    border-left:1px solid var(--hair);padding:8px 0 8px 16px;
+    text-align:left;
+  }
+  .label .t{font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+    font-size:clamp(15px,2.1vw,21px);letter-spacing:.02em;color:var(--ink-dim);
+    line-height:1.15}
+  .label .a{font-family:'Fraunces',serif;font-weight:400;
+    font-size:clamp(11px,1.4vw,13px);color:var(--ink-faint);margin-top:2px}
+  .label .m{margin-top:7px;font-size:10.5px;line-height:1.5;color:var(--ink-faint);
+    text-transform:uppercase;letter-spacing:.14em}
+  .label .c{margin-top:5px;font-size:10px;line-height:1.5;color:var(--ink-faint);letter-spacing:.03em}
+  .label .year{color:var(--flow-dim)}
+
+  /* ---------------- hint strip (bottom left) ---------------- */
+  .hint{
+    left:22px;bottom:20px;max-width:min(430px,86vw);
+    font-size:11px;line-height:1.65;color:var(--ink-dim);letter-spacing:.05em;
+    padding:10px 14px;border:1px solid var(--hair);border-radius:3px;
+    background:linear-gradient(160deg,rgba(7,19,26,.82),rgba(3,6,9,.82));
+    backdrop-filter:blur(3px);
+    transition:opacity .4s,transform .4s;
+  }
+  .hint .dismiss{float:right;cursor:pointer;color:var(--ink-faint);
+    font-size:14px;line-height:1;padding:2px 0 0 10px;pointer-events:auto}
+  .hint .dismiss:hover{color:var(--flow)}
+  .hint b{color:var(--flow);font-weight:500}
+  .hint .k{color:var(--warm)}
+  .hint.gone{opacity:0;transform:translateY(8px);pointer-events:none}
+  .hint .row{margin-top:6px}
+
+  /* ---------------- mode / status (top left) ---------------- */
+  .topbar{left:22px;top:20px;display:flex;align-items:center;gap:12px}
+  .modechip{
+    pointer-events:auto;cursor:pointer;display:flex;align-items:center;gap:8px;
+    font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);
+    border:1px solid var(--hair);padding:7px 12px;border-radius:3px;
+    background:rgba(7,19,26,.55);backdrop-filter:blur(3px);transition:color .3s,border-color .3s;
+  }
+  .modechip:hover{color:var(--flow);border-color:var(--flow-dim)}
+  .modechip .dot{width:7px;height:7px;border-radius:50%;background:var(--flow);
+    box-shadow:0 0 10px var(--flow)}
+  .modechip .state{color:var(--flow);letter-spacing:.06em;text-transform:none;font-weight:500}
+
+  /* ---------------- debug readout (top right) ---------------- */
+  .debug{
+    right:22px;top:20px;max-width:min(430px,86vw);
+    font-size:10.5px;line-height:1.55;color:var(--flow-dim);
+    font-variant-numeric:tabular-nums;white-space:pre-wrap;
+    border:1px solid var(--hair);padding:12px 14px;border-radius:3px;
+    background:linear-gradient(160deg,rgba(7,19,26,.9),rgba(3,6,9,.9));
+    backdrop-filter:blur(3px);
+  }
+  .debug .head{color:var(--ink-dim);letter-spacing:.2em;text-transform:uppercase;font-size:10px;margin-bottom:7px}
+  .debug .coords{color:var(--ink-dim)}
+
+  @media (max-width:640px){
+    .label{right:14px;bottom:14px;padding-left:12px;border-left-width:1px}
+    .label .m{font-size:9px}
+    .hint{left:14px;bottom:14px;font-size:10px;line-height:1.55;max-width:78vw}
+    .topbar{left:14px;top:12px}
+    .debug{right:14px;top:12px;max-width:70vw}
+    .modechip{padding:6px 9px;font-size:9px}
+  }
+</style>
+</head>
+<body>
+<div id="sketch"></div>
+<div class="room"></div>
+
+<div class="ui topbar">
+  <div id="modeChip" class="modechip" title="Cycle the presentation mode (M)">
+    <span class="dot"></span>
+    <span>current&nbsp;·&nbsp;<span class="state" id="modeName">Riven</span></span>
+  </div>
+</div>
+
+<div class="ui hint" id="hint">
+  <span class="dismiss" id="hintDismiss" title="dismiss">×</span>
+  <div><b>The vein of light is yours to sculpt.</b> The flowing current follows the real
+  weighted curve beneath it.</div>
+  <div class="row"><span class="k">drag</span>&nbsp; a glowing handle to bend the vein
+  &nbsp;·&nbsp; <span class="k">scroll</span> a handle to weight the pull toward it</div>
+  <div class="row"><span class="k">double-click</span> the vein to insert a knot (a new handle)
+  &nbsp;·&nbsp; <span class="k">N</span> a second vein &nbsp;·&nbsp; <span class="k">M</span> mode</div>
+  <div class="row"><span class="k">?</span> reveal the live math · <span class="k">A</span> listen to the room</div>
+</div>
+
+<div class="ui label">
+  <div class="t">The Vein of Light</div>
+  <div class="a">Vesper Nairn</div>
+  <div class="m">Real-time generative software · custom software · video projector · motion sensor</div>
+  <div class="c">Dimensions variable · Infinite loop <span class="year">2026</span></div>
+  <div class="c">Commissioned for “Halo &amp; Current”, International Museum of Projected Art, Rotterdam</div>
+</div>
+
+<div class="ui debug" id="debug" style="display:none"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@2.3.2/lib/p5.min.js"></script>
+<script>
+// ============================================================================
+//  THE VEIN OF LIGHT  —  a weighted current, drawn as a rational B-spline
+//  The visible, draggable control points ARE the instrument. Everything that
+//  flows (the light) follows the exact NURBS curve they define, in real time.
+// ============================================================================
+
+// ---------------- palette ----------------
+const C = {
+  abyss: [3,6,9],
+  deep:  [7,19,26],
+  flowCore:[242,255,246],
+  flow:[125,255,206],
+  flowTail:[34,195,168],
+  warm:[255,194,102],
+  warmHot:[255,142,61],
+  visitor:[255,143,107],
+  field:[40,130,150],
+};
+
+let curves = [];       // list of NURBS curves
+let particles = [];    // current (flow along the vein)
+let motes = [];        // ambient dust, unrelated to the curve (sparse)
+let loose = [];        // embers detached from the vein (Drift mode)
+let mode = 0;          // 0 Riven, 1 Flare, 2 Drift
+const MODES = ["Riven","Flare","Drift"];
+let dragging = null;   // {ci, ii}
+let hoverCtl = null;   // {ci, ii}
+let hintGone = false;
+let showDebug = false;
+let audioOn = false;
+let micLevel = 0;
+let lastNow = 0;
+let time = 0;
+let SP = 240;          // samples along each curve (perf-cap later for mobile)
+let TARGET_EMBERS = 150;
+let TARGET_PULSES = 9;
+let N_MOTES = 46;
+
+// ============================================================================
+//  REAL NURBS MATH  (Cox–de Boor)
+// ============================================================================
+// clamped uniform knot vector for n control points, degree p
+function buildKnots(n, p){
+  const U = [];
+  const interior = n - p - 1;
+  for(let i=0;i<=p;i++) U.push(0);
+  for(let j=1;j<=interior;j++) U.push(j/(interior+1));
+  for(let i=0;i<=p;i++) U.push(1);
+  return U;
+}
+
+// basis function N_{i,p}(u) via Cox–de Boor recursion
+function basis(i, p, u, U){
+  if(p === 0){
+    return (u >= U[i] && u < U[i+1]) ? 1 : 0;
+  }
+  const d1 = U[i+p] - U[i];
+  const d2 = U[i+p+1] - U[i+1];
+  let left = 0, right = 0;
+  if(d1 > 0) left  = ((u - U[i]) / d1) * basis(i,   p-1, u, U);
+  if(d2 > 0) right = ((U[i+p+1] - u) / d2) * basis(i+1, p-1, u, U);
+  return left + right;
+}
+
+// rational point on the NURBS curve at parameter u
+function evalNURBS(c, u){
+  const U = c.knots, p = c.deg, n = c.ctrl.length;
+  let wx=0, wy=0, wsum=0;
+  for(let i=0;i<n;i++){
+    const Ni = basis(i, p, u, U);
+    if(Ni === 0) continue;
+    const w = c.ctrl[i].w;
+    wx    += Ni * w * c.ctrl[i].x;
+    wy    += Ni * w * c.ctrl[i].y;
+    wsum  += Ni * w;
+  }
+  if(wsum === 0) return {x:0, y:0};
+  return {x: wx/wsum, y: wy/wsum};
+}
+
+function resample(c){
+  const S = c.samples;
+  c.pts=[]; c.uts=[]; c.tan=[];
+  for(let i=0;i<S;i++){
+    let u = i/(S-1);
+    if(u > 0.999999) u = 0.999999;
+    const p = evalNURBS(c, u);
+    c.pts.push({x:p.x, y:p.y});
+    c.uts.push(u);
+  }
+  // clamped ends pass exactly through first/last control point
+  c.pts[0]      = {x:c.ctrl[0].x, y:c.ctrl[0].y};
+  c.pts[S-1]    = {x:c.ctrl[c.ctrl.length-1].x, y:c.ctrl[c.ctrl.length-1].y};
+  // tangents by central difference
+  for(let i=0;i<S;i++){
+    const a = c.pts[Math.max(0,i-1)], b = c.pts[Math.min(S-1,i+1)];
+    let tx=b.x-a.x, ty=b.y-a.y;
+    const L = Math.hypot(tx,ty) || 1; tx/=L; ty/=L;
+    c.tan.push({x:tx, y:ty});
+  }
+  c.dirty = false;
+}
+
+// Boehm's knot insertion — inserts a knot (and one control point)
+// while leaving the curve's shape mathematically unchanged.
+function insertKnot(c, ubar){
+  const U = c.knots, p = c.deg, n = c.ctrl.length;
+  if(n > 30) return;                       // safety cap on handles
+  ubar = Math.min(Math.max(ubar, U[p]+1e-6), U[n]-1e-6);
+  let k = p;
+  while(k < n && U[k+1] <= ubar) k++;
+  k = Math.max(p, Math.min(n-1, k));
+  const newC = [];
+  for(let i=0;i<=n;i++){
+    if(i <= k-p){
+      newC.push({x:c.ctrl[i].x, y:c.ctrl[i].y, w:c.ctrl[i].w});
+    } else if(i >= k+1){
+      const o = c.ctrl[i-1];
+      newC.push({x:o.x, y:o.y, w:o.w});
+    } else {
+      const alpha = (ubar - U[i]) / (U[i+p] - U[i]);
+      const A = c.ctrl[i-1], B = c.ctrl[i];
+      newC.push({x: alpha*A.x + (1-alpha)*B.x,
+                 y: alpha*A.y + (1-alpha)*B.y,
+                 w: alpha*A.w + (1-alpha)*B.w});
+    }
+  }
+  const Unew = [];
+  let done = false;
+  for(let i=0;i<U.length;i++){
+    if(!done && i === k+1){ Unew.push(ubar); done = true; }
+    Unew.push(U[i]);
+  }
+  if(!done) Unew.push(ubar);
+  c.ctrl = newC; c.knots = Unew; c.dirty = true;
+}
+
+// ============================================================================
+//  SCENE
+// ============================================================================
+function makeCurve(ctrlArr, samples){
+  const ctrl = ctrlArr.map(([x,y,w])=>({x,y,w}));
+  const deg = 3;
+  return {
+    ctrl, deg,
+    knots: buildKnots(ctrl.length, deg),
+    pts:[], uts:[], tan:[],
+    samples: samples || SP,
+    dirty:true,
+    phase: Math.random()*6.283,
+  };
+}
+
+function addVein(){
+  const n = 5;
+  const pts = [];
+  const t0 = 0.12 + Math.random()*0.18;
+  const t1 = 0.72 + Math.random()*0.12;
+  const yA = height*(0.25 + Math.random()*0.3);
+  const yB = height*(0.25 + Math.random()*0.3);
+  for(let i=0;i<n;i++){
+    const t = i/(n-1);
+    const x = width*t0 + t*(width*(t1-t0));
+    const y = yA + (yB-yA)*t + Math.sin(t*6.28 + Math.random()*6.28)*height*0.06;
+    pts.push([x, y, 1]);
+  }
+  const c = makeCurve(pts, Math.max(150, Math.round(SP*0.85)));
+  curves.push(c);
+  seedParticlesFor(c);
+}
+
+function seedParticlesFor(c){
+  const ci = curves.indexOf(c);
+  const shareE = Math.floor(TARGET_EMBERS / curves.length);
+  const shareP = Math.max(2, Math.floor(TARGET_PULSES / curves.length));
+  for(let i=0;i<shareE;i++){
+    particles.push({
+      ci, u: Math.random(), kind:0, speed: 0.06+Math.random()*0.10,
+      off: (Math.random()-0.5)*30, size: 0.8+Math.random()*2.2,
+      hue: 0.5+Math.random()*0.5, drift: (Math.random()-0.5)*0.02,
+    });
+  }
+  for(let i=0;i<shareP;i++){
+    particles.push({
+      ci, u: Math.random(), kind:1, speed: 0.16+Math.random()*0.12,
+      off: (Math.random()-0.5)*8, size: 3+Math.random()*2.5,
+      hue: 1.0, drift:0,
+    });
+  }
+}
+
+function setup(){
+  const mobile = width < 640;
+  SP = mobile ? 150 : 240;
+  TARGET_EMBERS = mobile ? 70 : 150;
+  TARGET_PULSES = mobile ? 5 : 9;
+  N_MOTES = mobile ? 22 : 46;
+
+  const canvas = createCanvas(windowWidth, windowHeight);
+  canvas.parent('sketch');
+
+  // primary vein — a gentle S-flow across the gallery wall
+  const pts = [
+    [width*0.06, height*0.82, 1],
+    [width*0.24, height*0.88, 1],
+    [width*0.44, height*0.55, 1],
+    [width*0.64, height*0.30, 1],
+    [width*0.84, height*0.36, 1],
+    [width*0.96, height*0.20, 1],
+  ];
+  curves.push(makeCurve(pts, SP));
+  seedParticlesFor(curves[0]);
+
+  for(let i=0;i<N_MOTES;i++){
+    motes.push({
+      x:Math.random()*width, y:Math.random()*height,
+      vx:(Math.random()-0.5)*8, vy:(Math.random()-0.5)*8,
+      s:Math.random()*1.6+0.3, tw:Math.random()*6.283,
+    });
+  }
+
+  lastNow = millis();
+}
+
+function markDirty(){ for(const c of curves) c.dirty = true; }
+
+function update(t){
+  for(const c of curves) if(c.dirty) resample(c);
+
+  // current particles
+  const rate = 1 + (mode===1?1.2:0) + micLevel*2;
+  for(const p of particles){
+    const c = curves[p.ci];
+    if(!c) continue;
+    p.u += p.speed * rate * t;
+    if(p.u >= 1){
+      p.u -= 1;
+      p.off = (p.kind===0)? (Math.random()-0.5)*30 : (Math.random()-0.5)*8;
+    }
+    // in Drift mode, embers detach from the vein and wander off into the dark
+    if(p.kind===0 && mode===2 && Math.random() < 0.006){
+      const idx = Math.min(c.pts.length-1, Math.floor(p.u*(c.pts.length-1)));
+      const nx = -c.tan[idx].y, ny = c.tan[idx].x;
+      const pos = pointAt(c, p.u);
+      const speed = 20 + Math.random()*30;
+      loose.push({ x:pos.x, y:pos.y,
+        vx: nx*speed + (Math.random()-0.5)*40, vy: ny*speed + (Math.random()-0.5)*40,
+        life: 2.4 + Math.random()*2.4, s: 1+Math.random()*1.6 });
+    }
+  }
+
+  // detached embers
+  for(const l of loose){
+    l.life -= t;
+    l.x += l.vx*t; l.y += l.vy*t;
+    l.vx *= (1-0.4*t); l.vy *= (1-0.4*t);
+  }
+  loose = loose.filter(l => l.life > 0);
+
+  // motes
+  for(const m of motes){
+    m.x += m.vx*t; m.y += m.vy*t;
+    // gentle attraction to the visitor's presence
+    const dx = mouseX - m.x, dy = mouseY - m.y;
+    const d = Math.hypot(dx,dy);
+    if(d < 300){ const f = (1 - d/300)*6*t; m.x += dx/d*f; m.y += dy/d*f; }
+    if(m.x<0)m.x+=width; if(m.x>width)m.x-=width;
+    if(m.y<0)m.y+=height; if(m.y>height)m.y-=height;
+  }
+}
+
+function draw(){
+  time = millis()/1000;
+  let t = (millis() - lastNow)/1000; lastNow = millis();
+  if(t > 0.05) t = 0.05;
+
+  update(t);
+
+  // ---- background ----
+  background(C.abyss[0], C.abyss[1], C.abyss[2]);
+  noStroke();
+  // faint field glow behind the vein (a pool of light, not a gradient cliché)
+  fill(C.field[0], C.field[1], C.field[2], 90);
+  for(const c of curves){
+    const cx = (c.pts[Math.floor(c.pts.length*0.5)].x);
+    const cy = (c.pts[Math.floor(c.pts.length*0.5)].y);
+    ellipse(cx, cy, width*1.1, height*0.9);
+  }
+
+  // ---- ambient motes (sparse dust) ----
+  blendMode(BLEND);
+  for(const m of motes){
+    const a = 40 + 30*Math.sin(time*1.4 + m.tw);
+    fill(C.flow[0], C.flow[1], C.flow[2], a);
+    noStroke();
+    circle(m.x, m.y, m.s);
+  }
+
+  // ---- the veins (additive light) ----
+  blendMode(ADD);
+  for(const c of curves) drawVein(c);
+
+  // ---- the current ----
+  drawParticles(t);
+
+  // ---- visitor presence (ambient) ----
+  drawPresence();
+
+  // ---- control handles ----
+  blendMode(BLEND);
+  for(const c of curves) drawHandles(c);
+
+  if(showDebug) updateDebugDOM();
+}
+
+// draw one vein: layered strokes of decreasing width + real bloom
+function drawVein(c){
+  const breathe = 0.82 + 0.18*Math.sin(time*0.9 + c.phase);
+  const pulse = (mode===1)? 1.25 : 1.0;
+  const S = c.pts.length;
+
+  // under-glow
+  drawPoly(c, C.flowTail, 26*breathe, 14*pulse);
+  drawPoly(c, C.flow,    12*breathe, 30*pulse);
+  // core with real shadow bloom
+  const g = drawingContext;
+  g.save();
+  g.shadowColor = 'rgba(125,255,206,0.85)';
+  g.shadowBlur  = 18*pulse;
+  drawPoly(c, C.flowCore, 2.6, 120*pulse);
+  g.restore();
+}
+
+function drawPoly(c, rgb, w, alpha){
+  const S = c.pts.length;
+  noFill();
+  stroke(rgb[0], rgb[1], rgb[2], alpha);
+  strokeWeight(w);
+  strokeJoin(ROUND); strokeCap(ROUND);
+  beginShape();
+  for(let i=0;i<S;i++) vertex(c.pts[i].x, c.pts[i].y);
+  endShape();
+}
+
+function drawParticles(t){
+  noStroke();
+  for(const p of particles){
+    const c = curves[p.ci];
+    if(!c || c.pts.length===0) continue;
+    // position along the real curve + perpendicular offset
+    const idx = Math.min(c.pts.length-1, Math.floor(p.u*(c.pts.length-1)));
+    const pos = pointAt(c, p.u);
+    const nrm = -c.tan[idx].y, nrmY = c.tan[idx].x;
+    const x = pos.x + nrm*p.off;
+    const y = pos.y + nrmY*p.off;
+
+    if(p.kind === 1){
+      // bright pulse with a trailing streak
+      const ahead = pointAt(c, p.u - 0.02);
+      stroke(C.flowCore[0], C.flowCore[1], C.flowCore[2], 150);
+      strokeWeight(p.size*0.8);
+      line(ahead.x, ahead.y, x, y);
+      noStroke();
+      fill(C.flowCore[0], C.flowCore[1], C.flowCore[2], 210);
+      circle(x, y, p.size*2.4);
+      fill(C.warm[0], C.warm[1], C.warm[2], 120);
+      circle(x, y, p.size*1.2);
+    } else {
+      const a = 70 + 60*Math.abs(Math.sin(time*3 + p.u*20));
+      fill(C.flow[0], C.flow[1], C.flow[2], a);
+      circle(x, y, p.size);
+    }
+  }
+
+  // detached embers drifting off the vein
+  for(const l of loose){
+    const a = Math.max(0, 120 * (l.life/4.8));
+    fill(C.warm[0], C.warm[1], C.warm[2], a);
+    circle(l.x, l.y, l.s*1.6);
+  }
+}
+
+function pointAt(c, u){
+  const S = c.pts.length;
+  const f = Math.max(0, Math.min(0.999999, u)) * (S-1);
+  const i = Math.floor(f), j = Math.min(S-1, i+1), fr = f - i;
+  return { x: c.pts[i].x + (c.pts[j].x-c.pts[i].x)*fr,
+           y: c.pts[i].y + (c.pts[j].y-c.pts[i].y)*fr };
+}
+
+function drawPresence(){
+  // a soft halo where the visitor stands
+  const g = drawingContext;
+  g.save();
+  g.shadowColor = 'rgba(255,143,107,0.5)';
+  g.shadowBlur = 40;
+  fill(C.visitor[0], C.visitor[1], C.visitor[2], 30);
+  noStroke();
+  circle(mouseX, mouseY, 90);
+  g.restore();
+  // warm the vein near the visitor's nearest point
+  for(const c of curves){
+    const near = nearestOnCurve(c, mouseX, mouseY);
+    if(near && near.dist < 240){
+      const f = (1 - near.dist/240);
+      const p = pointAt(c, c.uts[near.i]);
+      g.save();
+      g.shadowColor = 'rgba(255,143,107,0.8)';
+      g.shadowBlur = 30*f;
+      fill(C.visitor[0], C.visitor[1], C.visitor[2], 70*f);
+      noStroke();
+      circle(p.x, p.y, 34*f);
+      g.restore();
+    }
+  }
+}
+
+function nearestOnCurve(c, x, y){
+  let bi=-1, bd=Infinity;
+  for(let i=0;i<c.pts.length;i++){
+    const dx=c.pts[i].x-x, dy=c.pts[i].y-y;
+    const d=dx*dx+dy*dy;
+    if(d<bd){bd=d;bi=i;}
+  }
+  return {i:bi, dist:Math.sqrt(bd)};
+}
+
+// ---------------- control handles ----------------
+function findHandle(mx, my){
+  let best=null, bd=1e18;
+  for(let ci=0;ci<curves.length;ci++){
+    const c=curves[ci];
+    for(let ii=0;ii<c.ctrl.length;ii++){
+      const dx=c.ctrl[ii].x-mx, dy=c.ctrl[ii].y-my;
+      const d=dx*dx+dy*dy;
+      const rad = handleRadius(c.ctrl[ii]) + 10;
+      if(d < rad*rad && d < bd){ bd=d; best={ci,ii}; }
+    }
+  }
+  return best;
+}
+function handleRadius(cp){ return 8 + Math.min(16, (cp.w-1)*3); }
+
+function drawHandles(c){
+  noFill();
+  // faint control polygon only while the curve is being sculpted
+  if(dragging || hoverCtl){
+    stroke(C.warm[0],C.warm[1],C.warm[2], 26);
+    strokeWeight(1);
+    beginShape();
+    for(const cp of c.ctrl) vertex(cp.x, cp.y);
+    endShape();
+    // knot position markers
+    stroke(C.flow[0],C.flow[1],C.flow[2], 60);
+    for(let i=0;i<c.knots.length;i++){
+      if(c.knots[i]>0 && c.knots[i]<1){
+        const p=evalNURBS(c,c.knots[i]);
+        strokeWeight(1); circle(p.x,p.y,6);
+      }
+    }
+  }
+  for(let ii=0;ii<c.ctrl.length;ii++){
+    const cp=c.ctrl[ii];
+    const active = (dragging && dragging.ci===curves.indexOf(c) && dragging.ii===ii) ||
+                   (hoverCtl && hoverCtl.ci===curves.indexOf(c) && hoverCtl.ii===ii);
+    const r = handleRadius(cp);
+    const g=drawingContext;
+    g.save();
+    g.shadowColor = active?'rgba(255,142,61,0.95)':'rgba(255,194,102,0.7)';
+    g.shadowBlur = active? 34 : 20 + (cp.w-1)*4;
+    // halo scales with weight
+    fill(C.warm[0],C.warm[1],C.warm[2], active?70:34);
+    noStroke();
+    circle(cp.x, cp.y, (r+7)*2);
+    // ring
+    stroke(C.warm[0],C.warm[1],C.warm[2], active?255:200);
+    strokeWeight(active?2.4:1.6);
+    circle(cp.x, cp.y, r*2);
+    g.restore();
+    // tiny center
+    fill(C.flowCore[0],C.flowCore[1],C.flowCore[2], 230);
+    noStroke();
+    circle(cp.x, cp.y, active?4:2.6);
+
+    // weight readout on hover
+    if(active && !showDebug){
+      fill(C.flowCore[0],C.flowCore[1],C.flowCore[2],230);
+      noStroke();
+      textAlign(CENTER,CENTER);
+      textFont('Karla');
+      textSize(11);
+      text('w='+(cp.w>=10?cp.w.toFixed(0):cp.w.toFixed(2)), cp.x, cp.y - r - 16);
+      // tiny index
+      fill(C.warm[0],C.warm[1],C.warm[2],150);
+      text('P'+ii, cp.x + r + 12, cp.y + 4);
+    }
+  }
+}
+
+// ============================================================================
+//  INTERACTION
+// ============================================================================
+function mousePressed(){
+  const h = findHandle(mouseX, mouseY);
+  if(h){ dragging = h; return false; }
+  return false;
+}
+function mouseDragged(){
+  if(dragging){
+    const c=curves[dragging.ci];
+    c.ctrl[dragging.ii].x = mouseX;
+    c.ctrl[dragging.ii].y = mouseY;
+    c.dirty = true;
+    return false;
+  }
+  return false;
+}
+function mouseReleased(){
+  if(dragging){
+    const c=curves[dragging.ci];
+    c.dirty=true;
+    dragging=null;
+  }
+}
+function touchStarted(){ return mousePressed(); }
+function touchMoved(){ return mouseDragged(); }
+function touchEnded(){ mouseReleased(); }
+
+function mouseMoved(){
+  hoverCtl = findHandle(mouseX, mouseY);
+  return false;
+}
+
+function mouseWheel(e){
+  if(hoverCtl){
+    const c=curves[hoverCtl.ci], cp=c.ctrl[hoverCtl.ii];
+    cp.w += -e.delta*0.01;
+    cp.w = Math.max(0.05, Math.min(24, cp.w));
+    c.dirty = true;
+    return false;
+  }
+}
+
+function doubleClicked(){
+  // insert a real knot at the nearest point on the vein -> a new handle
+  let best=null, bd=1e18;
+  for(const c of curves){
+    const n=nearestOnCurve(c, mouseX, mouseY);
+    if(n.dist<bd){bd=n.dist;best={c,i:n.i};}
+  }
+  if(best && bd < 90){
+    insertKnot(best.c, best.c.uts[best.i]);
+    best.c.dirty=true;
+    return false;
+  }
+  return false;
+}
+
+function keyPressed(){
+  if(key === 'n' || key === 'N'){ addVein(); return false; }
+  if(key === 'm' || key === 'M'){ cycleMode(); return false; }
+  if(key === '?' || key === '/'){
+    showDebug = !showDebug;
+    const el=document.getElementById('debug');
+    el.style.display = showDebug?'block':'none';
+    if(showDebug) updateDebugDOM();
+    return false;
+  }
+  if(key === 'a' || key === 'A'){ toggleAudio(); return false; }
+  if(key === 'Escape'){
+    const h=document.getElementById('hint');
+    if(!hintGone){ h.className='ui hint gone'; hintGone=true; }
+    return false;
+  }
+  return false;
+}
+
+function cycleMode(){
+  mode = (mode+1)%MODES.length;
+  document.getElementById('modeName').textContent = MODES[mode];
+}
+
+function toggleAudio(){
+  if(audioOn){ audioOn=false; return; }
+  navigator.mediaDevices && navigator.mediaDevices.getUserMedia({audio:true})
+    .then(stream => {
+      audioOn = true;
+      const ac = window.AudioContext || window.webkitAudioContext;
+      if(ac){
+        const ctx = new ac();
+        const src = ctx.createMediaStreamSource(stream);
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 128;
+        src.connect(analyser);
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        window._micLoop = setInterval(()=>{
+          analyser.getByteFrequencyData(data);
+          let s=0; for(let i=0;i<data.length;i++) s+=data[i];
+          micLevel = s/data.length/255;
+        }, 80);
+      }
+    })
+    .catch(()=>{ audioOn=false; });  // fails silently if permission declined
+}
+
+function updateDebugDOM(){
+  const el = document.getElementById('debug');
+  let out = '<div class="head">live readout — the math beneath the light</div>';
+  curves.forEach((c,ci)=>{
+    const U = c.knots.map(v=>+v.toFixed(3)).join('  ');
+    out += '<div class="coords">vein '+ci+' · deg '+c.deg+' · ctrl '+c.ctrl.length+
+           ' · knots ['+U+']</div>';
+    c.ctrl.forEach((cp,ii)=>{
+      out += '<div class="coords">  P'+ii+'  ('+cp.x.toFixed(0)+', '+cp.y.toFixed(0)+')  w '+cp.w.toFixed(2)+'</div>';
+    });
+  });
+  out += '<div class="coords">mode '+MODES[mode]+' · mic '+(audioOn?'on':'off')+
+         ' · level '+micLevel.toFixed(2)+'</div>';
+  el.innerHTML = out;
+}
+
+// dismiss hint on click
+document.getElementById('hintDismiss').addEventListener('click', ()=>{
+  document.getElementById('hint').className='ui hint gone'; hintGone=true;
+});
+// mode chip click
+document.getElementById('modeChip').addEventListener('click', cycleMode);
+
+function windowResized(){
+  resizeCanvas(windowWidth, windowHeight);
+  markDirty();
+}
+</script>
+</body>
+</html>
