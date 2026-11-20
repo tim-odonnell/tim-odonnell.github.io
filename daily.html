@@ -139,9 +139,104 @@ html,body{margin:0;padding:0} body{background:#fbfaf7;color:#1f2328;font:16px/1.
 .r-gold .visual .scale span{flex:1;}
 .r-gold .visual .scale span + span{text-align:right;}
 .r-gold .visual .weak{margin-left:8px;color:var(--muted);font-size:0.8em;}
-.r-gold{background:var(--bg);color:var(--fg)}</style></head><body>
+.r-gold{background:var(--bg);color:var(--fg)}
+.r-guide{
+  --bg: #f6f7f9; --surface: #ffffff; --ink: #18202b; --muted: #5a6474; --rule: #dde1e7;
+  --blue: #1d4ed8; --blue-soft: #e8eefc; --amber: #c26a05; --amber-soft: #fdf1e2;
+  --up: #0a7a32; --down: #c0262d; --ghost: #5b6b8c; --code: #eef1f5; --band: #1d4ed8;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){.r-guide:not([data-theme="light"]){
+  --bg: #12151a; --surface: #1a1f26; --ink: #e7eaee; --muted: #9aa3b0; --rule: #2c333d;
+  --blue: #7ea2ff; --blue-soft: #1d2840; --amber: #f5b13d; --amber-soft: #2e2414;
+  --up: #4cc274; --down: #ff6b6b; --ghost: #9fb0d6; --code: #232a33; color-scheme: dark }}
+.r-guide[data-theme="dark"]{
+  --bg: #12151a; --surface: #1a1f26; --ink: #e7eaee; --muted: #9aa3b0; --rule: #2c333d;
+  --blue: #7ea2ff; --blue-soft: #1d2840; --amber: #f5b13d; --amber-soft: #2e2414;
+  --up: #4cc274; --down: #ff6b6b; --ghost: #9fb0d6; --code: #232a33; color-scheme: dark }
+.r-guide *{ box-sizing: border-box }
+.r-guide .rbody{ background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); }
+.r-guide .wrap{ max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px; }
+.r-guide h1,.r-guide h2,.r-guide h3{ font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0 }
+.r-guide h1{ font-size: clamp(2rem, 5vw, 3.1rem); font-weight: 700; letter-spacing: -.01em }
+.r-guide h2{ font-size: 1.65rem; font-weight: 700; margin-top: 56px }
+.r-guide h3{ font-size: 1.2rem; font-weight: 600 }
+.r-guide p{ margin: 0 }
+.r-guide .lede{ font-size: 1.12rem; max-width: 66ch; color: var(--ink) }
+.r-guide .small{ font-size: .9rem; color: var(--muted) }
+.r-guide .eyebrow{ font: 600 .74rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.r-guide code,.r-guide .num{ font-family: var(--mono); font-size: .88em; font-variant-numeric: tabular-nums }
+.r-guide code{ background: var(--code); padding: 1px 5px; border-radius: 4px }
+.r-guide a{ color: var(--blue) }
+.r-guide a:focus-visible,.r-guide summary:focus-visible{ outline: 2px solid var(--blue); outline-offset: 2px }
+.r-guide .mast{ background: var(--band); color: #fff; margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+  padding-top: calc(env(safe-area-inset-top, 0px) + 40px); padding-bottom: 36px }
+.r-guide .mast .wrap{ padding-block: 0; display: grid; gap: 14px }
+.r-guide .mast .eyebrow{ color: rgba(255,255,255,.8) }
+.r-guide .mast .lede{ color: #fff; opacity: .95 }
+.r-guide .legend{ display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 6px; font-size: .9rem }
+.r-guide .legend span{ display: inline-flex; align-items: center; gap: 8px }
+.r-guide .chip{ white-space: nowrap; font: 600 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 7px; border-radius: 4px }
+.r-guide .chip.plain{ background: #fff; color: #1d4ed8 }
+.r-guide .chip.pro{ background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.7) }
+.r-guide section{ display: grid; gap: 18px }
+.r-guide .intro-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 28px }
+.r-guide .fact{ background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; display: grid; gap: 6px; align-content: start; min-width: 0 }
+.r-guide .fact b{ font-family: var(--display); font-size: 1.05rem }
+.r-guide .timeline{ list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-left: 2px solid var(--rule); margin-left: 4.6rem }
+.r-guide .timeline li{ position: relative; padding: 0 0 18px 18px; min-width: 0 }
+.r-guide .timeline li::before{ content: ""; position: absolute; left: -7px; top: .45rem; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--ghost) }
+.r-guide .timeline li.model::before{ background: var(--amber); border-color: var(--amber) }
+.r-guide .timeline li.pub::before{ background: var(--blue); border-color: var(--blue) }
+.r-guide .timeline time{ position: absolute; left: -4.6rem; top: .1rem; width: 3.9rem; text-align: right;
+  font: 500 .92rem var(--mono); font-variant-numeric: tabular-nums; color: var(--muted) }
+.r-guide .timeline b{ font-family: var(--display); font-size: 1.05rem }
+.r-guide .who{ font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 3px 6px; border-radius: 3px;
+  margin-left: 6px; vertical-align: 2px; background: var(--code); color: var(--muted) }
+.r-guide .who.model{ background: var(--amber-soft); color: var(--amber) }
+.r-guide .part{ background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden }
+.r-guide .part > header{ padding: 16px 20px 12px; border-bottom: 1px solid var(--rule); display: grid; gap: 4px }
+.r-guide .part > header .example{ font-size: .88rem; color: var(--muted) }
+.r-guide .lanes{ display: grid; grid-template-columns: 1fr 1fr }
+.r-guide .lane{ padding: 16px 20px 18px; display: grid; gap: 10px; align-content: start; min-width: 0 }
+.r-guide .lane + .lane{ border-left: 1px solid var(--rule); background: color-mix(in srgb, var(--blue-soft) 45%, var(--surface)) }
+.r-guide .lane .eyebrow{ color: var(--blue) }
+.r-guide .lane:first-child .eyebrow{ color: var(--muted) }
+.r-guide .lane ul{ margin: 0; padding-left: 1.1rem; display: grid; gap: 6px }
+@media (max-width: 720px){.r-guide .lanes{ grid-template-columns: 1fr }
+.r-guide .lane + .lane{ border-left: 0; border-top: 1px solid var(--rule) }}
+.r-guide .parts{ display: grid; gap: 18px }
+.r-guide .group-head{ display: grid; gap: 6px; margin-top: 44px }
+.r-guide .group-head h2{ margin-top: 0 }
+.r-guide .tags{ display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; align-items: baseline }
+.r-guide .tag{ font: 600 .78rem var(--mono) }
+.r-guide .tablewrap{ overflow-x: auto }
+.r-guide table{ border-collapse: collapse; width: 100%; font-size: .92rem }
+.r-guide th,.r-guide td{ text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); vertical-align: top }
+.r-guide th{ font: 600 .72rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.r-guide td:first-child{ white-space: nowrap; font-weight: 600 }
+.r-guide .figure{ background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px }
+.r-guide .figure svg{ width: 100%; height: auto; display: block; max-width: 760px }
+.r-guide .figure .ax{ stroke: var(--rule); stroke-width: 1.2 }
+.r-guide .figure .tk{ fill: var(--muted); font: 11px var(--mono) }
+.r-guide .figure .lbl{ fill: var(--ink); font: 600 11px var(--mono) }
+.r-guide .figure .price{ fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linejoin: round }
+.r-guide .figure .ghost{ stroke: var(--ghost); stroke-width: 2; stroke-dasharray: 6 4; fill: none }
+.r-guide .figure .avg{ stroke: var(--amber); stroke-width: 2.8; fill: none }
+.r-guide .figure .avglbl{ fill: var(--amber); font: 600 11px var(--mono) }
+.r-guide .figure .note{ fill: var(--muted); font: 11px var(--body) }
+.r-guide .figure .gap{ stroke: var(--amber); stroke-width: 1.4; stroke-dasharray: 2 3 }
+.r-guide .dot{ fill: var(--ink) }
+.r-guide .callout{ border-left: 3px solid var(--amber); background: var(--amber-soft); padding: 14px 18px; border-radius: 0 8px 8px 0; display: grid; gap: 6px }
+.r-guide .limits{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px }
+.r-guide footer{ margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule) }
+.r-guide{background:var(--bg);color:var(--fg)}</style></head><body>
 <header class="top"><h1>Daily reports &mdash; Friday November 20, 2026</h1>
-<nav><a href="#econ">Us Economy</a> <a href="#vfinx">VFINX vs Trend</a> <a href="#gold">Gold vs Trend</a></nav>
+<nav><a href="#econ">US Economy</a> <a href="#vfinx">VFINX vs Trend</a> <a href="#gold">Gold vs Trend</a> <a href="#guide">How to read it</a></nav>
 <p>Made automatically every morning by scripts on a home computer (the economy notes use a small local AI model and are
 fact-checked by script). Not financial advice.</p></header>
 <div class="r-econ" id="econ"><div class="rbody"><h1>US Economy — Friday, November 20, 2026</h1><p class="meta">Generated 2026-11-20 06:40 by Good-Guy-Economy. Facts: FRED, BLS, BEA, Fed, CBO feeds; headlines: AP and Reuters.</p><h2>Morning note</h2><div class=take><p><b>What changed</b> <span class=tag>from official data</span></p><ul><li>Initial jobless claims (weekly): 203,000 for Nov 14, up from 202,000 (Labor Dept).</li><li>30-yr mortgage rate: 7.28% for Nov 19, up from 7.11% (Freddie Mac).</li><li>New releases: Minutes of the Federal Open Market Committee, October 27-28, 2026 (Fed, 11/18); Outdoor Recreation Economic Statistics, U.S. and States, 2025 (BEA, 11/18); An Analysis of the Navy&#x27;s Fiscal Year 2027 Shipbuilding Plan (CBO, 11/19); The Navy&#x27;s New Battleship Program (CBO, 11/18).</li></ul><p><b>What it means</b> <span class=tag>ANALYSIS written by script from the computed history</span><br>[ANALYSIS] None of the 8 recession warning lights is on; since 1986 a recession began within a year after only 2% of months like this, against 11% for any month. None of the conditions true now has come before recessions more often than usual. Direction of the latest readings: growth up, jobs flat, inflation up, rates flat, recession risk flat.</p><p><b>Watch next</b> <span class=tag>official release calendars</span></p><ul><li>Activities of U.S. Multinational Enterprises, 2024 — Fri Nov 20 (BEA)</li><li>GDP (Second Estimate) and Corporate Profits, 3rd Quarter 2026 — Wed Nov 25 (BEA)</li><li>Personal Income and Outlays, October 2026 — Wed Nov 25 (BEA)</li></ul></div><p class="muted">✓ Number check: every figure in the note matches tonight's data.</p><h3>Where it's heading (daily scorecard)</h3><div class=take><p>Where the economy is heading:</p><p>- Growth: up (medium confidence) - Real GDP growth (annualized) 3.4 % for 2026 Q3 (was 2.2)</p><p>- Jobs: flat (low confidence) - Initial jobless claims (weekly) 203,000 for 2026-11-14 (was 200,000)</p><p>- Inflation: up (high confidence) - CPI inflation y/y 3.72 % for 2026-09 (was 3.35)</p><p>- Rates: flat (low confidence) - Fed funds target (upper) 4 % for 2026-11-19 (was 4)</p><p>- Recession risk: flat (low confidence) - Sahm recession indicator 0 pt for 2026-10 (was 0)</p><p>- Scorecard so far: no call has reached its check date yet</p></div><h2>Key numbers</h2><div class=scroll><table><thead><tr><th>Indicator</th><th>Latest</th><th>Period</th><th>Previous</th><th>~1 yr ago</th><th></th></tr></thead><tbody><tr><td>Real GDP growth (annualized)</td><td class=num><b>3.4</b> %</td><td>2026 Q3</td><td class=num>▲ 2.2</td><td class=num>3.9</td><td></td></tr><tr><td>Unemployment rate</td><td class=num><b>4.1</b> %</td><td>2026-10</td><td class=num>▼ 4.2</td><td class=num>4.4</td><td></td></tr><tr><td>Payrolls, monthly change</td><td class=num><b>165</b> k jobs</td><td>2026-10</td><td class=num>▲ 60</td><td class=num>-140</td><td></td></tr><tr><td>Initial jobless claims (weekly)</td><td class=num><b>203,000</b> </td><td>2026-11-14</td><td class=num>▲ 202,000</td><td class=num>228,000</td><td><span class=new>NEW</span></td></tr><tr><td>Sahm recession indicator</td><td class=num><b>0</b> pt</td><td>2026-10</td><td class=num>■ 0</td><td class=num>0.23</td><td></td></tr><tr><td>CPI inflation y/y</td><td class=num><b>3.72</b> %</td><td>2026-09</td><td class=num>▲ 3.35</td><td class=num>3.02</td><td></td></tr><tr><td>Core CPI y/y</td><td class=num><b>2.57</b> %</td><td>2026-09</td><td class=num>▲ 2.45</td><td class=num>3.02</td><td></td></tr><tr><td>Core PCE y/y</td><td class=num><b>3.12</b> %</td><td>2026-09</td><td class=num>▲ 3.03</td><td class=num>2.82</td><td></td></tr><tr><td>Fed funds target (upper)</td><td class=num><b>4</b> %</td><td>2026-11-19</td><td class=num>■ 4</td><td class=num>4</td><td><span class=new>NEW</span></td></tr><tr><td>Fed funds effective</td><td class=num><b>3.88</b> %</td><td>2026-11-18</td><td class=num>■ 3.88</td><td class=num>3.88</td><td><span class=new>NEW</span></td></tr><tr><td>10-yr Treasury</td><td class=num><b>5.07</b> %</td><td>2026-11-18</td><td class=num>▼ 5.1</td><td class=num>4.12</td><td><span class=new>NEW</span></td></tr><tr><td>Yield curve 10y-2y</td><td class=num><b>0.28</b> pt</td><td>2026-11-19</td><td class=num>▲ 0.27</td><td class=num>0.55</td><td><span class=new>NEW</span></td></tr><tr><td>Yield curve 10y-3m</td><td class=num><b>0.7</b> pt</td><td>2026-11-19</td><td class=num>▼ 0.73</td><td class=num>0.18</td><td><span class=new>NEW</span></td></tr><tr><td>30-yr mortgage rate</td><td class=num><b>7.28</b> %</td><td>2026-11-19</td><td class=num>▲ 7.11</td><td class=num>6.24</td><td><span class=new>NEW</span></td></tr><tr><td>High-yield spread</td><td class=num><b>3.47</b> pt</td><td>2026-11-18</td><td class=num>▲ 3.43</td><td class=num>3.2</td><td><span class=new>NEW</span></td></tr><tr><td>Corporate Baa spread</td><td class=num><b>1.52</b> pt</td><td>2026-11-18</td><td class=num>▼ 1.53</td><td class=num>1.79</td><td><span class=new>NEW</span></td></tr><tr><td>Consumer sentiment (UMich)</td><td class=num><b>51</b> </td><td>2026-11 prelim</td><td class=num>▲ 48</td><td class=num>51</td><td></td></tr><tr><td>Real retail sales y/y</td><td class=num><b>2.75</b> %</td><td>2026-09</td><td class=num>▲ 2.29</td><td class=num>0.6</td><td></td></tr><tr><td>Industrial production y/y</td><td class=num><b>2.15</b> %</td><td>2026-10</td><td class=num>▲ 2.14</td><td class=num>1.76</td><td></td></tr><tr><td>Housing starts (annual rate)</td><td class=num><b>1,309</b> k</td><td>2026-10</td><td class=num>▲ 1,191</td><td class=num>1,273</td><td></td></tr><tr><td>WTI oil</td><td class=num><b>89.53</b> $/bbl</td><td>2026-11-17</td><td class=num>▲ 89.24</td><td class=num>60.66</td><td></td></tr></tbody></table></div><p class="muted">NEW = a value published since the previous run. Inflation, retail sales and industrial production are year-over-year %; payrolls are the monthly change.</p><h2>Today vs history <span class=tag>computed from FRED + NBER recession dates — no model involved</span></h2><p class=lights><span class=dot></span><span class=dot></span><span class=dot></span><span class=dot></span><span class=dot></span><span class=dot></span><span class=dot></span><span class=dot></span> <b>Recession warning lights: 0 of 8 on (2026-10)</b></p><p>Since 1986, in months with no lights on, a recession began within 12 months 2% of the time (4 of 241 months). Base rate for any month: 11%.</p><p>Conditions true now, and what followed each past time they began:</p><div class=scroll><table><thead><tr><th>Condition</th><th>Now</th><th>Past cases</th><th>Recession ≤12 mo</th><th>≤24 mo</th><th>Unemployment 12 mo later</th></tr></thead><tbody><tr><td>Consumer sentiment below 60</td><td class=num>51 <span class=muted>(2026-11 prelim)</span></td><td class=num>6 since 1952</td><td class=num>0 of 3</td><td class=num>0 of 2</td><td class=num>-0.2 pt</td></tr><tr class=verdict><td colspan=6>→ LOWER recession risk than usual (0 of 3 = 0% vs 17% for any month since the data begins); unemployment usually little changed afterwards</td></tr><tr><td>CPI inflation above 3%</td><td class=num>3.72 <span class=muted>(2026-09)</span></td><td class=num>16 since 1948</td><td class=num>4 of 16</td><td class=num>5 of 15</td><td class=num>-0.3 pt</td></tr><tr class=verdict><td colspan=6>→ about the USUAL recession risk (4 of 16 = 25% vs 18% for any month since the data begins) - no extra signal; unemployment usually FELL afterwards</td></tr><tr><td>30-yr mortgage rate above 7%</td><td class=num>7.28 <span class=muted>(2026-11-19)</span></td><td class=num>3 since 1971</td><td class=num>0 of 3</td><td class=num>0 of 3</td><td class=num>-0.2 pt</td></tr><tr class=verdict><td colspan=6>→ LOWER recession risk than usual (0 of 3 = 0% vs 14% for any month since the data begins); unemployment usually little changed afterwards</td></tr></tbody></table></div><p class="muted">Not true now: Unemployment up 0.5 pt or more from its 12-month low; Yield curve inverted (10-yr below 3-month); Yield curve inverted (10-yr below 2-yr); Jobless claims 20%+ above their 12-month low; Corporate bond spread 1 pt+ above its 12-month low; Industrial production lower than a year ago; Housing starts 15%+ below a year ago; Job growth under 50k a month (3-month average); Oil price up 50%+ from a year ago; 10-yr Treasury yield up 1 pt+ from a year ago; Fed funds rate up 1 pt+ from a year ago; Fed funds rate down 1 pt+ from a year ago</p><h2>Official releases (last 3 days)</h2><ul><li><span class=src>BLS</span> 2026-11-18 — <a href='https://www.bls.gov/bls/' target=_blank rel=noopener>Major Economic Indicators Latest Numbers</a></li><li><span class=src>Fed</span> 2026-11-18 — <a href='https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm' target=_blank rel=noopener>Minutes of the Federal Open Market Committee, October 27-28, 2026</a></li><li><span class=src>BEA</span> 2026-11-18 — <a href='https://www.bea.gov/news/2026/outdoor-recreation-economic-statistics-us-and-states-2025' target=_blank rel=noopener>Outdoor Recreation Economic Statistics, U.S. and States, 2025</a></li><li><span class=src>CBO</span> 2026-11-19 — <a href='https://www.cbo.gov/publication/62884' target=_blank rel=noopener>An Analysis of the Navy&#x27;s Fiscal Year 2027 Shipbuilding Plan</a></li><li><span class=src>CBO</span> 2026-11-18 — <a href='https://www.cbo.gov/publication/62860' target=_blank rel=noopener>The Navy&#x27;s New Battleship Program</a></li></ul><h2>Headlines (AP, Reuters — last 24 hours)</h2><ul><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMilAFBVV95cUxNNHVUbzYtdzBpNHpVbTdJWlVrRWpxZmJTVG15bS10TGN2ZzRJS29FYkoxcEgzNG9ZNGVhd1hoaHNLVzVfQ3RVYWprUFJWUnRHNm15U1BBUFc5Y2otZmltZHVCTkdySV96TzliMWFQU3o1X0g5cThPVWViMW8yYjBHWGJOamhvRGt2a0lBZUFzZTVTSURW?oc=5' target=_blank rel=noopener>Wall Street tumbles to its longest losing streak since 2024 as the Dow drops 1,100 points</a></li><li><span class=src>AP</span> 2026-11-20 — <a href='https://news.google.com/rss/articles/CBMingFBVV95cUxQY09GMmxTYlpRMnQ3YVJ4Q3BUdmg3NEFJWG5lVlh4TC0zZGxxZVcydTkwSkpiZUZfS3BXdlRab05HSW5TS0h5TDY5NFRKajBDSWdFbUdhNFIxMzUxc3pLRnEtMXVNblBwZmgteFlUWVhuS0lRU3diRGpWQnkyeWtDMGJiS3hzd2xCdUtDVHIxc0hOWGkwTHdPZ1FfenUwQQ?oc=5' target=_blank rel=noopener>Asia shares drop on AI worries, echoing Wall Street&#x27;s decline despite the strong Anthropic debut</a></li><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMipgFBVV95cUxOZWFNcnM4SHZMUHBoaEMwczJGRDNJZHRMTUwwYkNvamlyczc2OHJqSXNOZWE2dU1xLUkybDBMUURBQ0RNTFQyOWpJRWpmZTRmT210WldpWFl5NkhsZnN0VUkwRUpBRzZiVk9xQ01MZU1vM3ctQTVBVXF0MVBnVjUtVWJOeDgxUnhzWnRPSE8zaGY5clVSYzhURllKWExFOTA4RC1pdXpR?oc=5' target=_blank rel=noopener>A fifth straight drop for the S&amp;P 500 drags Wall Street to its longest losing streak since June</a></li><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMijgFBVV95cUxOU0wtR0NWdnFLNkJjV0d6a1lCZ2V1TmtSYVdmVGoycXhrdlRYbkdqS2tFTWJrb29Gbno2LXBXQ2JfYlQ1VEdlZ0pBc2pWZ3N3WVNMOFBoVm04WUlzLWNHQ05VT1FPTlZ3dnp1NUJlbElkRUUxb0hCcnVZZHZhOHVmU3VnMlR5MUNCTy1kc2J3?oc=5' target=_blank rel=noopener>What to know about Anthropic’s massive IPO as it breaks records on Wall Street</a></li><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMirwFBVV95cUxQbU5VcjZtVGoycThWMjhJUWhyM1B2cWYxckh1LWpod1JrU1VhZWQwOUhVa2lCRTI5SVY4UVNGTHN6LXF2aXFZZnJtcVlSSGt3ejBjZTFjRWFOSExNZENqN2xBU040WlBBM1AzUkVIUUFVNjA4QjJ5R2F5TlhmTkFuTm9SMzAzUVE2d0RFdnQzSUY1RjJQMTlvU2VkY0JpRDd2UEZYczNUYTJocTF5Vmpz?oc=5' target=_blank rel=noopener>The average US 30-year mortgage rate rises to 7.28% this week, ending a four-week slide</a></li><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMikwFBVV95cUxQeUtkM1MtenlTQmFNcms1MW1oUDAzSkp3Y3JtZU5ZSHlfbHpiUUZiQzVaQ3JBNTBSU1BfbHM5UkdhNEc4OFZiZDlMalBVN0U3dzlrdzRSYURDalRqalNMR2FXSU15TlphSlFZLWNpMHMzbEpndDRXT1V0RXJvM25PaC03UF9tOUNGdjdVN0xWc1h1NjQ?oc=5' target=_blank rel=noopener>How major US stock indexes fared Thursday 11/19/2026</a></li><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiqAFBVV95cUxOb3V2TDlSUldUZ0FQbDZiSnVVTmVxNE8yZmtYZ2RLMXFQTzE5WThlbU1iNHR1WDNJOVctQjRwZDdKZ3F2NEVFUjdtRWhYQVBJc1k4SllqaktSVE44V1ptVjF1QkhubVVqcURUd1gzUV9oNlkxcGI0eUdnNWFzY1JsanRPSm94cV82Y1k0NTltU3BtbmVCWjU0Tjc5WjBvcVFnLXBQWGJ6bWU?oc=5' target=_blank rel=noopener>Oregon migrant farmworkers, increasingly relied upon, continue to face dangerous housing conditions</a></li><li><span class=src>AP</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMipAFBVV95cUxNY0prTGQ4Z1R2M3B2S1Q0SGc5VG5ibTJTTGgwbTVnMkZpanJCZjRjcUNnaVBCMFdiTHNpV3NXR0RmcW1VWnNKLWdDXzRjaE1XNXdxckVWaVl6SjFoWEtfZUUzWEpwMDI2eFNpTXkzbkx5Vk5fSFhtQ2s5MHk2UzVDYXR0X2wwLTVQeUdKU3lhZmZaMU13bXlmdmFQcUE1ODlrRlQtZA?oc=5' target=_blank rel=noopener>Former owner of internet-famous squirrel charged with mortgage fraud</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiswFBVV95cUxNWkZwc3MzeGxPMldOWGxwZnk4UFBSWGtfVC1pTnBnQXVRZzBrNTBzdGxCc05WSU5KNjVoTk1XSm82Q2UxSms1WnhkT05tTG5xU3JULWRtUTVOSlpmeXgyNTFWRVVOX1BTS3ZNaDZEendqbkJJNXlMSndLb0JiQjJ0dEhnMWs3bm5RX0hDNTZ4SVlaamJTU2ZDZVJ1VG8ycVpNdXR3NFdKMHhDVjdlUWMyWmhwVQ?oc=5' target=_blank rel=noopener>J.P. Morgan sees Fed rate hikes at next three meetings as inflation persists</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiuwFBVV95cUxNSS10Sk1ISG1wS3o2YVNlVkU3RWtKak00OEVaOFBvbnhUTzNFYlZtTm9PUHBfZkxpX0NVaUpOM1ZVRkROa0pRMmdrRzhOOC1KY0ZGOXZIaDhJbVhDWFp6YjFJUE4yZUlTYVZFRmI0THlJaWNGMnFmckdhbEpoTV9wd0RERHhZZU95MVFSU3Zvb2lNX2JXaWZKUjhQN1ByeUxROFhOTnM4V0oycVpLdThFWDQyVUd4TmNEVGpv?oc=5' target=_blank rel=noopener>Anthropic draws bullish Wall Street calls ahead of Nasdaq debut</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiuwFBVV95cUxONFhTcEs0ZXJTOXhCWUVEQlBXR3BaeFdLVjdiNkNXdVFrNWtaVjFJRVc0cTcyRUJBRXBqV0JZUHUza3I0TndGYzZRX3N3eU4zR3plNl9wUkR5VU1FQ0phSjZEODlXYjJYQk5QaVRoTFotemhuTWFwSkhrYzFfNE1tM0JJNlBFY1BmNFNhS0FTeURyaGtHM2xJb3VoRE5LY0I1SVUxeko5dDJvRGlGam1ITllSRFU1OEV6T0tF?oc=5' target=_blank rel=noopener>Wall Street ends sharply lower as Anthropic&#x27;s debut fails to revive AI fervor</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiswFBVV95cUxPVmU0cXVPRUhwcDZpRkRudEI3bjNfMllQVEN3M09VWFNmQUJTck1UUE9mVERRbmFicElZMWxKVnd3UWpTNGY3R1JiZ0NnRnNBRHhLMkxkVC1vUWVOVzQ3NzcwMkoycTR0MC1LUnBfdUIyWl9OZE5xYnlVVmQ5bzdVZmdnVHFjUjh6dHZrbVVQdEFPaDNCUC1KSkZEMUlhcU9OeWFiWi10SGwxNTBpNE16aTd1MA?oc=5' target=_blank rel=noopener>Anthropic&#x27;s blockbuster debut tests Wall Street&#x27;s faith in AI boom</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMitAFBVV95cUxQZ2V1TTUwaFZ4T1pYN3VBVDlqZThZVHBvQ0VhNnRNNlpWVlZXLUYtVWh5T096NmxYbEsxdjF6T0JmZmZCM0lHQ01CT2NUcTdrUzJ0djdFbWRteWlNTWF4enhqajdoY2ZWcjBmc0lMYkpYczV1RDJVdmxZWFctNDI3bHFxOTBySmZvbHNDRXM5QmxqWUtieXFJYjZnUmNONVUzUnBTYTlMdlNqaDdzdkYweVRHZ2w?oc=5' target=_blank rel=noopener>AI surge could strain US capacity and overheat economy, Fed&#x27;s Goolsbee says</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiwwFBVV95cUxOcXEzRFlWTEdhd3lGQThDc1NRMGhfYWdMUDBlUVFzMlo1Vzl4b1Q5RG5iaXE0bzFaMTF4TGV6MjViSzBmYzl1UVVwLXU4QnZSa25WbkU1eEE2MkdsYjRYY01vQ2JCc1ZGUzNhd2lueFR3bGdGRExZbXRhcXp5Zlo4Y3Q3bnJURWlIYk9IRFdncDl2TW56ZHN1c0t0aXZucG5aMEFScGV3OEJ2RXdYZEZnQTNTMDR5c1VHMnRKYlkxMk9sejA?oc=5' target=_blank rel=noopener>Fed&#x27;s Jefferson says AI boosting inflation, productivity impact possible &#x27;in the future&#x27;</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMiuAFBVV95cUxObGNlZHpfREZsS2VzTkI1dGxhQ1FLYk9ta0YzRHp6Wl9JRlF2ZVBFZTlJTmo3NjNoZXkyYUdQeFVwYVdGRW9wM25ldlozX3ZnRncyNktWTkk4RGdILXFaWGxnaVRMSUJvY0IzYUhuVGw3VmVyWGl2bmFXTVFZZ1FiblBqLXBsNThZMFRiRWxwYkg4Z2Y5Mk9YYkpWcHoyT1JhdnVXM01KeTYzaVBsUk9TUmZueTEzbU44?oc=5' target=_blank rel=noopener>Fed&#x27;s Barr worried regulatory changes may increase financial sector risks</a></li><li><span class=src>Reuters</span> 2026-11-19 — <a href='https://news.google.com/rss/articles/CBMisgFBVV95cUxQNl8xcFNUUzg5MHNEdmx3QmtiV2hJRXhEVW9ETVVSYnBJTFFDLXcxOEgyVUJWdUVsOXk4S0JKaDRoN1BIQk15UzBBWjdrQ3EzWi1BV2VLRHdCX1Rvdm9hRHg2VWRvNDF0QmpvaF9WZzFrS2VFMXY3VXgxNHpzYjA3cGF1QzRHd2RGNjlmZ285eHZHNUM3S2FIUnF6R2cycnVCbzdqZWRvbWJ6ZzlYR2IwNGdR?oc=5' target=_blank rel=noopener>Canada sees little US movement on tariff relief, sources say</a></li></ul><h2>News notes <span class=tag>summarised by the model from official text — sources named per item</span></h2><div class=notes><h3>Assessment of Financial Stability</h3><p class=srcline>Source: <a href='https://www.federalreserve.gov/monetarypolicy/fomcminutes20261028.htm' target=_blank rel=noopener>Fed — Minutes of the Federal Open Market Committee, October 27-28, 2026</a></p><li>[REPORTED] The staff presented an assessment of financial stability vulnerabilities during the presentation.</li><li>[OPINION] Scenarios illustrated that a decline in asset prices could amplify economic shocks.</li><li>[ANALYSIS] Investors and fund managers may be forced to sell assets due to deleveraging or redemptions under severe scenarios.</li><h3>Outdoor Recreation Economic Statistics</h3><p class=srcline>Source: <a href='https://www.bea.gov/news/2026/outdoor-recreation-economic-statistics-us-and-states-2025' target=_blank rel=noopener>BEA — Outdoor Recreation Economic Statistics, U.S. and States, 2025</a></p><li>[DATA] Value added for outdoor recreation accounted for 2.3 percent ($704.2 billion) of current-dollar gross domestic product (GDP) in 2025 nationally.</li><li>[DATA] Value added share of state GDP for outdoor recreation ranged from 6.1 percent in Hawaii to 1.0 percent in the District of Columbia.</li><h3>AI Impact on Economy</h3><p class=srcline>Source: Reuters — Fed&#x27;s Jefferson says AI boosting inflation, productivity impact possible &#x27;in the future&#x27;</p><li>[REPORTED] Federal official Jefferson stated that Artificial Intelligence is boosting inflation and could have a productivity impact in the future.</li><p class=muted>(GAPS: Specific data points regarding the magnitude of this predicted inflation or productivity impact are not present in the source text provided.)</p></div><h2>History comparisons <span class=tag>computed by econ-history</span></h2><div class=card><b>S-20261120-1: Consumer sentiment below 60</b><pre>HISTORY: 6 past episodes since 1952; recession within 12 months in 0 of 3, within 24 months in 0 of 2
@@ -231,4 +326,335 @@ near 0 = no clear trend, so that row means little.</p>
 A price under it is BELOW that trend (cheaper than the trend), over it is ABOVE. R² near 1 = prices hugged the line;
 near 0 = no clear trend, so that row means little.</p>
 <p><i>Trend lines are fitted to past prices; they are not a forecast and not financial advice.</i></p></div></div>
+<div class="band"><span>HOW TO READ THIS PAGE</span><small>what each part means and how it is made</small></div>
+<div class="r-guide" id="guide"><div class="rbody">
+
+
+
+
+
+<div class="mast">
+  <div class="wrap">
+    <p class="eyebrow">timodonnell.info/daily &middot; guide</p>
+    <h1>Reading the Good-Guy Daily</h1>
+    <p class="lede">One web page, rebuilt every night on a small computer at home: a report on the US economy, then VFINX (an S&amp;P&nbsp;500 index fund) and gold measured against their own price trends. This guide explains how it is made and what every part is telling you.</p>
+    <div class="legend">
+      <span><span class="chip plain">Plain words</span> the idea, no finance background needed</span>
+      <span><span class="chip pro">Precisely</span> exact definitions, data and method</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section>
+  <div class="intro-grid">
+    <div class="fact"><span class="eyebrow">What it is</span><b>Three reports, one page</b>
+      <p>US economy first, then VFINX vs trend, then gold vs trend, each under its own blue band. The links at the top jump to each one.</p></div>
+    <div class="fact"><span class="eyebrow">Who writes it</span><b>Mostly scripts, a little AI</b>
+      <p>Every number is fetched and calculated by ordinary programs. A small AI model running on the home computer writes only the short news notes, and those are fact-checked.</p></div>
+    <div class="fact"><span class="eyebrow">When</span><b>Published around 3 a.m. Eastern</b>
+      <p>The data is the latest available overnight: yesterday's closing prices and whatever official figures were released by then.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>How one night builds the page</h2>
+  <p class="lede">The computer wakes itself at 1:00 a.m., does about five minutes of real work spread over two hours, publishes, and goes back to sleep.</p>
+  <ol class="timeline">
+    <li><time>01:00</time><b>Wake up</b><span class="who">system</span>
+      <p class="small">The computer wakes from sleep and is held awake until the night's work is done.</p></li>
+    <li><time>01:05</time><b>Library download</b><span class="who">script</span>
+      <p class="small">New official documents from the Federal Reserve, Bureau of Labor Statistics (BLS), Bureau of Economic Analysis (BEA) and Congressional Budget Office (CBO) are saved to a local library, along with their text.</p></li>
+    <li class="model"><time>01:10</time><b>Collect</b><span class="who model">script + AI</span>
+      <p class="small">A script fetches about 20 economic series from FRED (the St. Louis Fed's database), the agencies' release feeds, AP and Reuters headlines, and a short reading pack of new official text. The AI model reads that pack and writes a few short news notes in a fixed format.</p></li>
+    <li><time>01:30</time><b>Direction calls, history comparison, morning note</b><span class="who">script</span>
+      <p class="small">Rules turn the latest readings into five direction calls, compare today's conditions with every past episode since the 1940s, and write the "What it means" note. No AI involved.</p></li>
+    <li class="model"><time>01:40</time><b>Fact check</b><span class="who model">AI, checked</span>
+      <p class="small">Each news-note sentence is put back next to its source text and checked one at a time. Wrong sentences are replaced by the source's own sentence; unsupported ones are removed.</p></li>
+    <li><time>02:05</time><b>Economy report built</b><span class="who">script</span>
+      <p class="small">A second, purely numeric check drops any sentence whose figure does not match the night's data.</p></li>
+    <li><time>02:10</time><b>Gold and VFINX reports</b><span class="who">script</span>
+      <p class="small">Full daily price histories are downloaded from Yahoo Finance, the trend lines are fitted and the charts drawn. About one second each. Weekdays only.</p></li>
+    <li class="pub"><time>03:00</time><b>Published</b><span class="who">script</span>
+      <p class="small">The three reports are joined into one page and pushed to the website. A backup build at 06:40 and a second publish at 06:50 catch a late or failed run.</p></li>
+  </ol>
+  <div class="callout">
+    <b>No night, no report.</b>
+    <p>If the computer is off overnight, the missed night is not faked in the morning. The next real run looks back over the whole gap and marks the report as a catch-up. A report that is more than a day old (four days for the price reports, to cover weekends) is labelled "not updated today".</p>
+  </div>
+</section>
+
+<div class="group-head">
+  <p class="eyebrow">Part one</p>
+  <h2>The US economy report</h2>
+  <p class="lede">A morning briefing built from official data. Read top to bottom, it goes from "what happened" to "what it might mean" to "how unusual is this, historically".</p>
+</div>
+
+<div class="parts">
+
+<article class="part">
+  <header><h3>Morning note</h3>
+    <p class="example">Example, Nov 20, 2026: "Initial jobless claims (weekly): 203,000 for Nov 14, up from 202,000."</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>The two-minute version. <b>What changed</b> lists the official numbers that came out since the last report. <b>What it means</b> puts them in context: are any recession warning signs on, and which way are things moving. <b>Watch next</b> shows the big releases coming up.</p>
+      <p>A green tick under it means every number in the note was checked against the night's data.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>"What changed" lists only observations whose release is newer than the previous report (not merely newer than the previous calendar day), with the prior value.</li>
+        <li>"What it means" is generated by script from the computed history pack: the warning-light count, the conditional recession frequency for months like this one against the unconditional base rate, and the five current direction calls.</li>
+        <li>"Watch next" is parsed from the agencies' official release calendars, with a cached fallback; the report warns if a calendar could not be read.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>Where it's heading (direction calls and scorecard)</h3>
+    <p class="example">Example: "Inflation: up (high confidence) - CPI inflation y/y 3.72% for 2026-09 (was 3.35)."</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>Five simple questions, answered every day: is <b>growth</b>, <b>jobs</b>, <b>inflation</b>, <b>interest rates</b> and <b>recession risk</b> going up, down or holding steady?</p>
+      <p>Each answer is a vote of three related numbers, so one odd reading cannot swing it. "High confidence" means all three agree. Each call carries its own test ("wrong if…") and is graded later, so you can see over time whether the calls are any good.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Votes compare the latest reading with the previous one (a month earlier for daily series), with a dead band per series. Net +2 or more = rising, &minus;2 or less = falling, otherwise steady; |3| = high confidence.</li>
+        <li>Growth: real GDP growth (SAAR), real retail sales, industrial production. Jobs: unemployment, initial claims, Sahm indicator (all inverted). Inflation: CPI, core CPI, core PCE y/y. Rates: fed funds target, 10-yr Treasury, 30-yr mortgage. Recession risk: Sahm, 10y&ndash;3m curve (inverted), Baa&ndash;10y spread.</li>
+        <li>A call stands until its direction changes or 35 days pass, then is scored RIGHT / WRONG / NO CHANGE on its key series. Results accumulate in the scorecard line.</li>
+        <li>These are descriptive momentum calls, not forecasts with a model behind them.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>Key numbers</h3>
+    <p class="example">Example row: "Unemployment rate 4.1% · 2026-10 · ▼ 4.2 · 4.4"</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>A dashboard of about 20 of the most-watched economic numbers: output, jobs, prices, interest rates, borrowing costs, the consumer mood, housing and oil.</p>
+      <p>Each row shows the latest value, the date it covers, an arrow for which way it moved since the previous reading, and the value about a year ago. <b>NEW</b> marks numbers released since the last report.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Source: FRED series (BLS, BEA, Fed H.15, Freddie Mac PMMS, ICE BofA, Moody's, EIA via FRED); consumer sentiment from the University of Michigan's own page when it is newer than FRED.</li>
+        <li>Inflation, real retail sales and industrial production are y/y %; payrolls are the monthly change in thousands; GDP is the annualized quarterly real growth rate.</li>
+        <li>"Period" is the observation date, not the release date; the arrow compares with the prior observation (▲ up, ▼ down, ■ unchanged).</li>
+        <li>Spreads: high-yield = ICE BofA US HY OAS; Baa = Moody's Baa minus 10-yr Treasury.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>Today vs history, and the recession warning lights</h3>
+    <p class="example">Example: "Recession warning lights: 0 of 8 on. Since 1986, in months with no lights on, a recession began within 12 months 2% of the time (4 of 241). Base rate for any month: 11%."</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>This is the "has this happened before, and what came next?" section. It is pure arithmetic on long official records; no AI touches it.</p>
+      <p><b>Eight warning lights</b> are classic recession signals, such as rising unemployment or an inverted yield curve. The fewer that are on, the calmer the picture. Each one is compared with how often a recession followed in the past.</p>
+      <p>Then every unusual condition that is true today (say, inflation above 3%) is checked against each past time it happened: did a recession follow, and did unemployment rise?</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Recessions are NBER-dated (FRED <code>USREC</code>), monthly data. Lights: unemployment +0.5 pt over its 12-month low; 10y&ndash;3m inverted; 10y&ndash;2y inverted; claims 20%+ over 12-month low; Baa spread +1 pt over 12-month low; industrial production below a year ago; housing starts 15%+ below a year ago; 3-month average payroll growth under 50k.</li>
+        <li>The light panel uses the common sample of all eight (1986 on), excludes months inside recessions and the last 12 months, and reports the share of matching months followed by a recession start within 12 months, against the unconditional base rate.</li>
+        <li>Fifteen conditions in all, each with its own history (some back to 1948). An episode counts when the condition begins; the table gives episodes, recession within 12 and 24 months, and the typical change in unemployment 12 months later, against the base rate since that series starts.</li>
+        <li>Small samples (often 3&ndash;16 episodes) mean wide uncertainty: "0 of 3" is weak evidence either way.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>Official releases and headlines</h3>
+    <p class="example">Example: "Fed 2026-11-18 — Minutes of the Federal Open Market Committee, October 27-28, 2026"</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>Two plain lists with links: what the government agencies published in the last three days, and the last day's economic headlines from AP and Reuters. Nothing is summarised here; it is the raw "what came out" so you can click through.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Releases come from the Fed, BLS, BEA and CBO feeds plus the local document library (dated by release, so FOMC minutes appear about three weeks after the meeting).</li>
+        <li>AP and Reuters block scripts, so headlines come through Google News RSS. Titles only; their content is not used as data.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>News notes (the AI-written part)</h3>
+    <p class="example">Example: "[DATA] Value added for outdoor recreation accounted for 2.3 percent ($704.2 billion) of current-dollar GDP in 2025."</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>Short summaries of new official documents, written by the small AI model and then checked. Every note names its source, and every sentence starts with a tag that tells you what kind of statement it is:</p>
+      <div class="tags">
+        <span class="tag">[DATA]</span><span>a number taken from the source</span>
+        <span class="tag">[REPORTED]</span><span>what the source says happened</span>
+        <span class="tag">[OPINION]</span><span>someone's view, as stated in the source</span>
+        <span class="tag">[ANALYSIS]</span><span>an interpretation, not a fact</span>
+      </div>
+      <p>A "corrected by fact check" mark means the AI's sentence was replaced with the source's own wording. "GAPS" lists what the source did not say.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Model: a ~2B-parameter Gemma model run locally on the CPU. It works mainly from the night's reading pack of official text; scripts do the fetching and all saving, and the model's reply is parsed from a fixed format.</li>
+        <li>Fact check, one sentence per prompt with the closest source passages beside it: replaced with the closest source sentence if judged wrong, removed if unsupported, kept only if judged right and every number in it appears in the source, "unchecked" if the source could not be fetched. Separately, a script check in the report build drops sentences that misread the night's data.</li>
+        <li>Treat these notes as pointers to the documents, not as analysis. The numbers that matter are in the tables above, which no model writes.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>History comparisons and open direction calls</h3>
+    <p class="example">Example: "T-3: Inflation: rising — confidence high; wrong if: the next CPI inflation y/y reading is below 3.72"</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>The record-keeping at the end. History comparisons (S-numbers) spell out in sentences what the history table showed. Open direction calls (T-numbers) list each current call with the exact result that would prove it wrong, so the scorecard can grade it honestly later.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Up to three conditions true today are written up, each with its episode count and 12/24-month recession frequencies.</li>
+        <li>"Wrong if" is fixed when the call is made (the key series and its baseline value), so a call cannot quietly change its own test.</li>
+      </ul></div>
+  </div>
+</article>
+
+</div>
+
+<div class="group-head">
+  <p class="eyebrow">Part two</p>
+  <h2>VFINX vs trend and Gold vs trend</h2>
+  <p class="lede">Two reports built the same way, with no AI at all. They ask one question: is the price today above or below where its past trends say it "should" be, over many different time spans at once?</p>
+</div>
+
+<section class="figure" aria-label="Schematic of the trend chart">
+  <p class="eyebrow">How the chart works (illustration, not real data)</p>
+  <svg viewBox="0 0 640 260" role="img" aria-label="A price line rising with dips, three dashed trend lines of different slopes, and a solid amber all-history line below the price">
+    <line class="ax" x1="40" y1="230" x2="560" y2="230"/>
+    <text class="tk" x="40" y="250">5 years ago</text>
+    <text class="tk" x="560" y="250" text-anchor="end">next trading day</text>
+    <line class="ghost" x1="40" y1="190" x2="560" y2="40" style="opacity:.9"/>
+    <line class="ghost" x1="300" y1="95" x2="560" y2="62" style="opacity:.35"/>
+    <line class="ghost" x1="40" y1="215" x2="560" y2="128" style="opacity:.8"/>
+    <line class="avg" x1="40" y1="200" x2="560" y2="98"/>
+    <path class="price" d="M40,182 L70,176 L95,196 L120,206 L150,188 L175,172 L200,178 L230,156 L255,146 L280,150 L300,128 L325,118 L345,138 L370,112 L395,96 L420,90 L445,104 L470,80 L495,70 L520,58 L540,66 L552,60"/>
+    <circle class="dot" cx="552" cy="60" r="4"/>
+    <line class="gap" x1="552" y1="64" x2="552" y2="98"/>
+    <text class="lbl" x="568" y="44">5y</text>
+    <text class="lbl" x="568" y="66" style="opacity:.5">1y</text>
+    <text class="avglbl" x="568" y="102">all</text>
+    <text class="lbl" x="568" y="132">20y</text>
+    <text class="note" x="470" y="20" text-anchor="end">dot = latest close</text>
+    <text class="note" x="545" y="84" text-anchor="end">gap to the long-run trend</text>
+  </svg>
+  <p class="small">Solid dark line: the price. Dashed lines: one trend per time span, fainter when the fit is weak. Solid amber line: the all-history trend. Lines bunching together means the trends agree; fanning out means they disagree.</p>
+</section>
+
+<div class="parts" style="margin-top:18px">
+
+<article class="part">
+  <header><h3>The trend idea</h3>
+    <p class="example">Example, Nov 19, 2026: VFINX closed at $663.15; its all-history trend says $557.30, so the price is 19.0% above it.</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>Prices grow by percentages, so over time they curve upward. For each time span (the last month, year, 10 years and so on), the report finds the steady growth rate that best fits the prices in that span. That is the <b>trend line</b>.</p>
+      <p>If today's price is above a trend line, the price has run ahead of that trend; below it, the price is behind. Short spans show recent momentum; long spans show the big picture.</p>
+      <p>A trend line describes the past. It is not a prediction, and the report says so.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Ordinary least squares of ln(price) on calendar days within each window: ln&nbsp;P = a + b&middot;t. The fitted curve is exponential, a straight line on a log scale.</li>
+        <li>Windows in calendar days: 30, 91, 182, 365, 1826, 3652, 7305 (gold, VFINX), plus 10957 and 14610 (VFINX only). A window with less than its full history (more than 7 days short) is flagged "short history".</li>
+        <li>Growth %/yr = e<sup>365.25&middot;b</sup> &minus; 1. R&sup2; is the fit of the log regression: near 1 the prices hugged the line, near 0 the window had no clear trend.</li>
+        <li>Each window is refitted from scratch every night. Fits are exact closed-form OLS, checked against an independent implementation to the cent.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>The data behind each report</h3>
+    <p class="example">VFINX: 11,818 trading days since Jan 2, 1980. Gold: 6,582 trading days since Aug 30, 2000.</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p><b>VFINX</b> is Vanguard's 500 Index Fund, which tracks the S&amp;P&nbsp;500. Its prices include reinvested dividends, so they show what an investor actually earned.</p>
+      <p><b>Gold</b> is the price of gold futures on the COMEX exchange, in US dollars per ounce.</p>
+      <p>Both use the previous trading day's closing price.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>VFINX: Yahoo Finance daily history, adjusted close (dividends and distributions reinvested), rescaled so the latest adjusted close equals the latest NAV. Older points therefore sit below the NAV quoted at the time. Today's bar is ignored until 18:00 New York time, when the NAV is out.</li>
+        <li>Gold: Yahoo Finance <code>GC=F</code>, the continuous front-month COMEX contract, daily close; today's bar is ignored until 17:00 New York time. Roll effects between contracts are not adjusted.</li>
+        <li>"Next trading day" is the next weekday; exchange holidays are not modelled.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>Summary line, dots and gap bars</h3>
+    <p class="example">Example: "BELOW trend on 6 of 9" with six red dots and three hollow green ones.</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>The bold line at the top says how many trends the price is above and below. The row of dots says the same at a glance: <span style="color:var(--down)">red</span> for below, <span style="color:var(--up)">green</span> for above.</p>
+      <p>Each bar shows how far the price is from one trend: left and red is cheaper than the trend, right and green is pricier. Pale rows marked "weak trend" are spans where prices did not follow a clear trend, so give them less weight.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Gap % = close / fitted value on the close date &minus; 1, per window.</li>
+        <li>Bar length is linear in the gap and capped at &plusmn;20%; the printed number is exact.</li>
+        <li>"Weak trend" = R&sup2; below 0.5 (drawn at 40% opacity).</li>
+        <li>The all-history trend is reported alongside, not counted in the "N of 9" tally.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>Price and trend lines chart, with the amber line</h3>
+    <p class="example">Example: on Nov 19, 2026 the gold chart showed the short-term trends ending above the price and the long ones below it.</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>The last five years of price, with every trend line drawn faintly behind it, each running across its own time span and ending at the next trading day. The labels on the right name each line.</p>
+      <p>When the lines <b>bunch together</b>, short and long trends agree. When they <b>fan out</b>, the market's recent path differs from its long-run path.</p>
+      <p>The <b style="color:var(--amber)">solid amber line</b> is the trend through the whole price history, recalculated every night. The distance between the price and the amber line is the simplest answer to "how stretched is this market compared with its long-run path?"</p>
+      <p>On a phone the chart opens at today; swipe left for earlier years.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Log price scale, so equal vertical distances are equal percentage changes and every exponential trend is a straight line. The y-range is the visible prices and line ends, padded 3%.</li>
+        <li>Price series thinned to at most 500 evenly spaced points for display, so a single-day extreme may not appear; the numbers in the tables use every day.</li>
+        <li>Line opacity = max(0.15, R&sup2;). Labels keep the order of the line ends and are pushed at least 10 px apart, so a label's height is approximate when lines converge.</li>
+        <li>Amber = the same OLS over the full sample (VFINX since Jan 1980, gold since Aug 2000), refitted nightly: today 10.2%/yr for VFINX (R&sup2; 0.96) and 9.1%/yr for gold (R&sup2; 0.86). A new day moves it by about 0.005%, so it drifts visibly only over months.</li>
+      </ul></div>
+  </div>
+</article>
+
+<article class="part">
+  <header><h3>The table</h3>
+    <p class="example">Example row: "All history (since Jan 1980) · $557.30 · +18.99% · ABOVE · $557.45 · +10.19% · 0.96 · 11,818"</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <div class="tablewrap"><table>
+        <tr><th>Column</th><th>Means</th></tr>
+        <tr><td>Trend today</td><td>Where the trend line says the price would be today</td></tr>
+        <tr><td>Gap</td><td>How far the actual price is from that</td></tr>
+        <tr><td>On-trend price</td><td>The price that would sit exactly on the trend next trading day</td></tr>
+        <tr><td>Growth/yr</td><td>How fast that trend climbs (or falls) per year</td></tr>
+        <tr><td>R&sup2;</td><td>How well the trend fits, 0 to 1</td></tr>
+        <tr><td>Bars</td><td>How many trading days the trend is based on</td></tr>
+      </table></div></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Trend today = exp(a + b&middot;t) at the last close date; on-trend price = the same at the next weekday.</li>
+        <li>All dollar figures are in today's NAV (VFINX) or today's contract (gold) terms.</li>
+        <li>Short-window growth rates are annualized from weeks of data and swing wildly (for example &minus;47%/yr on a 1-month window); read them as slope, not expectation.</li>
+        <li>The amber-bordered last row is the all-history trend.</li>
+      </ul></div>
+  </div>
+</article>
+
+</div>
+
+<section>
+  <h2>What it is not</h2>
+  <div class="limits">
+    <div class="fact"><b>Not financial advice</b><p>The trends describe past prices. Markets can stay above or below any trend for years.</p></div>
+    <div class="fact"><b>Not a forecast model</b><p>The direction calls and history tables count what happened before. They do not predict what happens next.</p></div>
+    <div class="fact"><b>Not real time</b><p>Everything reflects the previous close and the official releases out by about 2 a.m. Eastern.</p></div>
+    <div class="fact"><b>Not written by AI where it counts</b><p>Every number, table, chart and call is calculated by scripts. The AI writes only the tagged news notes, which are fact-checked twice.</p></div>
+  </div>
+</section>
+
+<footer class="small">
+  <p>Data: FRED (Federal Reserve Bank of St. Louis), BLS, BEA, Federal Reserve Board, CBO, University of Michigan, NBER recession dates, Yahoo Finance; headlines from AP and Reuters via Google News. Schedule and methods as of November 20, 2026.</p>
+</footer>
+
+</main>
+</div></div>
 </body></html>
