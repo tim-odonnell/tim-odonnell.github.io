@@ -175,6 +175,14 @@ html,body{margin:0;padding:0} body{background:#fbfaf7;color:#1f2328;font:16px/1.
 .r-gold th:first-child,.r-gold td:first-child,.r-gold td:nth-child(4){ text-align:left; }
 .r-gold .above{ color:var(--up); }
 .r-gold .below{ color:var(--down); }
+.r-gold .cgbox{ border:2px solid var(--avg); border-radius:8px; padding:10px 14px; margin:12px 0 16px; }
+.r-gold .cgbox h2{ font-size:1.05em; margin:0 0 6px; }
+.r-gold .cgbox table{ width:auto; margin:4px 0 8px; }
+.r-gold .cgbox td{ border:none; padding:2px 14px 2px 0; text-align:right; }
+.r-gold .cgbox td:first-child{ text-align:left; }
+.r-gold .cgbox .cg-buy{ background:var(--up); color:var(--bg); font-weight:800; padding:6px 10px; border-radius:6px; }
+.r-gold .cgbox .cg-wait{ font-weight:700; color:var(--down); }
+.r-gold .cgbox p{ font-size:.85em; margin:6px 0 0; }
 .r-gold .visual{font-size:1rem;overflow-x:auto;margin:8px 0 16px;}
 .r-gold .visual .dots{margin-bottom:0.5em;}
 .r-gold .visual .dots .dot{margin-right:2px;font-size:1.5em;}
@@ -391,6 +399,18 @@ near 0 = no clear trend, so that row means little.</p>
 <h1>Gold vs trend - 2026-11-20</h1>
 <p class="summary">Gold closed at $3,515.40 on Fri Nov 20, 2026: BELOW trend on 6 of 7 windows (1 month, 3 months, 6 months, 1 year, 5 years, 10 years). Long-run (all-history) trend: 4.2% above.</p>
 
+<div class="cgbox"><h2>Costco 1 oz gold bar vs the all-history trend - Mon Nov 23</h2>
+<div class="cg-wait">Not a buy day: 6.5% above the all-history trend</div>
+<table>
+<tr><td>Costco in-store price</td><td>$3,669.99</td></tr>
+<tr><td>After 2% card cash back</td><td><b>$3,596.59</b></td></tr>
+<tr><td class="avgtxt">All-history trend for Nov 23</td><td class="avgtxt"><b>$3,377.45</b></td></tr>
+<tr><td>Buy if the shelf price is at or below</td><td><b>$3,446.38</b></td></tr>
+</table>
+<p class="muted">In-store price recorded by costcogoldinventory.com (unofficial tracker), price set Nov 20, 2026 · 11:16 PM ET; checked Nov 23, 2026 · 1:57 PM ET. Costco.com: sold out; it was last listed at $3,679.99. Costco can change the price during the day, so check the shelf: buy only at
+$3,446.38 or less. No sales tax assumed (bullion-exempt state). Not financial advice.</p></div>
+
+
 <div class="visual"><div class="dots"><span class="dot below">●</span><span class="dot below">●</span><span class="dot below">●</span><span class="dot below">●</span><span class="dot below">●</span><span class="dot below">●</span><span class="dot above">○</span> Below trend on 6 of 7</div><div class="bars"><div class="bar-row" style="opacity:0.4"><span class="label">1 month</span><div class="bar-area"><div class="left"><div class="bar red" style="width:53.5px"></div></div><div class="right"><div class="bar green" style="width:0px"></div></div></div><span class="gap">-7.13%</span><small class="weak">(weak trend)</small></div><div class="bar-row" style="opacity:1"><span class="label">3 months</span><div class="bar-area"><div class="left"><div class="bar red" style="width:61.6px"></div></div><div class="right"><div class="bar green" style="width:0px"></div></div></div><span class="gap">-8.22%</span></div><div class="bar-row" style="opacity:0.4"><span class="label">6 months</span><div class="bar-area"><div class="left"><div class="bar red" style="width:103.9px"></div></div><div class="right"><div class="bar green" style="width:0px"></div></div></div><span class="gap">-13.86%</span><small class="weak">(weak trend)</small></div><div class="bar-row" style="opacity:0.4"><span class="label">1 year</span><div class="bar-area"><div class="left"><div class="bar red" style="width:110.7px"></div></div><div class="right"><div class="bar green" style="width:0px"></div></div></div><span class="gap">-14.75%</span><small class="weak">(weak trend)</small></div><div class="bar-row" style="opacity:1"><span class="label">5 years</span><div class="bar-area"><div class="left"><div class="bar red" style="width:150.0px"></div></div><div class="right"><div class="bar green" style="width:0px"></div></div></div><span class="gap">-23.23%</span></div><div class="bar-row" style="opacity:1"><span class="label">10 years</span><div class="bar-area"><div class="left"><div class="bar red" style="width:33.3px"></div></div><div class="right"><div class="bar green" style="width:0px"></div></div></div><span class="gap">-4.45%</span></div><div class="bar-row" style="opacity:1"><span class="label">20 years</span><div class="bar-area"><div class="left"><div class="bar red" style="width:0px"></div></div><div class="right"><div class="bar green" style="width:150.0px"></div></div></div><span class="gap">+25.70%</span></div><div class="scale"><span>&#9664; cheaper than trend</span><span>pricier than trend &#9654;</span></div></div></div>
 <div class="trendchart"><h2>Price and trend lines, last 5 years</h2><div class="cscroll"><svg class="chart wide" viewBox="0 0 640 300" role="img">
 <line x1="48" y1="282" x2="596" y2="282" class="ax"/>
@@ -476,7 +496,7 @@ near 0 = no clear trend, so that row means little.</p>
     <li><time>02:10</time><b>Gold, VFINX and VBMFX reports</b><span class="who">script</span>
       <p class="small">Full daily price histories are downloaded from Yahoo Finance, the trend lines are fitted and the charts drawn. About one second each. Weekdays only.</p></li>
     <li class="pub"><time>03:00</time><b>Published</b><span class="who">script</span>
-      <p class="small">The three reports are joined into one page and pushed to the website. A backup build at 06:40 and a second publish at 06:50 catch a late or failed run.</p></li>
+      <p class="small">Costco's gold bar price is read and compared with the gold trend, then the reports are joined into one page and pushed to the website. A backup build at 06:40 and a second publish at 06:50 catch a late or failed run.</p></li>
   </ol>
   <div class="callout">
     <b>No night, no report.</b>
@@ -740,6 +760,23 @@ near 0 = no clear trend, so that row means little.</p>
   </div>
 </article>
 
+<article class="part">
+  <header><h3>Costco gold bar box (gold section)</h3>
+    <p class="example">Example, Nov 23, 2026: the 1 oz bar was $3,669.99 in store, $3,596.59 after 2% cash back, against an all-history trend of $3,377.45: 6.5% above, not a buy day. Buy at a shelf price of $3,446.38 or less.</p></header>
+  <div class="lanes">
+    <div class="lane"><p class="eyebrow">Plain words</p>
+      <p>The price of Costco's 1 oz gold bar, minus the 2% cash back from paying by credit card, compared with where gold's <b style="color:var(--amber)">all-history trend</b> is that day. When the bar costs that much or less, a green <b>BUY DAY</b> banner appears, and the gold band says so too.</p>
+      <p>The last line gives the highest shelf price that still counts. Costco can change the price during the day, so check the shelf before buying.</p></div>
+    <div class="lane"><p class="eyebrow">Precisely</p>
+      <ul>
+        <li>Price: the in-store price of the 1 oz PAMP Suisse Lady Fortuna bar as recorded by costcogoldinventory.com, an unofficial tracker (Costco shows gold prices to signed-in members only). Read at 03:00 and again at 06:50, every day.</li>
+        <li>If the tracker can't be read, the box shows an <b>ESTIMATE</b>: the newest gold close plus 3.5%, Costco's typical markup.</li>
+        <li>Effective price = shelf &times; 0.98. Trend = the same all-history fit as the table's amber row, evaluated at today's date. Buy-at price = trend &divide; 0.98, rounded down to the cent. No sales tax assumed.</li>
+        <li>Every reading is logged to <code>Gold-Reports/data/costco-history.csv</code>.</li>
+      </ul></div>
+  </div>
+</article>
+
 </div>
 
 <section>
@@ -753,7 +790,7 @@ near 0 = no clear trend, so that row means little.</p>
 </section>
 
 <footer class="small">
-  <p>Data: FRED (Federal Reserve Bank of St. Louis), BLS, BEA, Federal Reserve Board, CBO, University of Michigan, NBER recession dates, Yahoo Finance; headlines from AP and Reuters via Google News. Schedule and methods as of November 20, 2026.</p>
+  <p>Data: FRED (Federal Reserve Bank of St. Louis), BLS, BEA, Federal Reserve Board, CBO, University of Michigan, NBER recession dates, Yahoo Finance; Costco gold bar price from costcogoldinventory.com (unofficial tracker); headlines from AP and Reuters via Google News. Schedule and methods as of November 23, 2026.</p>
 </footer>
 
 </main>
